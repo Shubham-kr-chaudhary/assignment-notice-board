@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Category {
+  EXAM
+  EVENT
+  GENERAL
+}
+
+enum Priority {
+  NORMAL
+  URGENT
+}
+
+model Notice {
+  id          String   @id @default(cuid())
+  title       String
+  body        String
+  category    Category
+  priority    Priority
+  publishDate DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
