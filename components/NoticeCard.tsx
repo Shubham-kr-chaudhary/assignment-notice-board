@@ -1,4 +1,6 @@
 import Link from "next/link";
+import DeleteModal from "./DeleteModal";
+import { useState } from "react";
 
 
 type Notice = {
@@ -18,57 +20,97 @@ export default function NoticeCard({
   notice,
   onDelete,
 }: Props) {
+
+  const [showDeleteModal, setShowDeleteModal] =useState(false);
  return (
-  <div className="border rounded-lg p-4 shadow">
-    <div className="flex justify-between items-start">
-      <h2 className="text-xl font-bold">
-        {notice.title}
-      </h2>
+  <div className="bg-card text-card-foreground border border-border rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-200">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex-1">
+        <h2 className="text-xl font-semibold tracking-tight">
+          {notice.title}
+        </h2>
+
+        <p className="mt-2 text-muted-foreground leading-relaxed">
+          {notice.body}
+        </p>
+      </div>
 
       {notice.priority === "URGENT" && (
-        <span className="bg-red-500 text-white px-2 py-1 rounded text-sm">
+        <span className="w-fit rounded-lg  px-3 py-1 text-xs font-medium  bg-amber-600 text-white">
           Urgent
         </span>
       )}
     </div>
 
-    <p className="mt-2">{notice.body}</p>
-
-    <div className="mt-4 text-sm text-gray-500">
-      <p>Category: {notice.category}</p>
+    <div className="mt-5 flex flex-col gap-1 text-sm text-muted-foreground">
+      <p>
+        <span className="font-medium text-foreground">
+          Category:
+        </span>{" "}
+        {notice.category}
+      </p>
 
       <p>
-        Publish Date:{" "}
+        <span className="font-medium text-foreground">
+          Publish Date:
+        </span>{" "}
         {new Date(
           notice.publishDate
         ).toLocaleDateString()}
       </p>
     </div>
 
-    <div className="mt-4 flex gap-2">
-      <Link
-        href={`/notice/edit/${notice.id}`}
-        className="bg-yellow-500 text-white px-3 py-2 rounded"
-      >
-        Edit
+    <div className="mt-6 flex flex-col gap-2 sm:flex-row">
+ <Link
+  href={`/notice/edit/${notice.id}`}
+  className="
+    flex-1
+    inline-flex
+    items-center
+    justify-center
+    rounded-lg
+    bg-blue-600
+    px-4
+    py-2
+    text-sm
+    font-medium
+    text-white
+    transition
+    hover:bg-blue-700
+  "
+>
+        Edit Notice
       </Link>
-
-      <button
-        onClick={() => {
-          const confirmed =
-            window.confirm(
-              "Are you sure you want to delete this notice?"
-            );
-
-          if (confirmed) {
-            onDelete(notice.id);
-          }
-        }}
-        className="bg-red-500 text-white px-3 py-2 rounded"
-      >
-        Delete
-      </button>
+<button
+  onClick={() =>
+    setShowDeleteModal(true)
+  }
+  className="
+    flex-1
+    rounded-lg
+    bg-red-600
+    px-4
+    py-2
+    font-medium
+    text-white
+    transition
+    hover:bg-red-700
+  "
+>
+  Delete
+</button>
+<DeleteModal
+  open={showDeleteModal}
+  onClose={() =>
+    setShowDeleteModal(false)
+  }
+  onConfirm={() => {
+    onDelete(notice.id);
+    setShowDeleteModal(false);
+  }}
+/>
     </div>
+    
   </div>
 );
 }

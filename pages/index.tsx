@@ -41,31 +41,71 @@ export default function Home() {
       );
     }
   };
+return (
+  <div className="min-h-screen bg-background">
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+      <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-4xl font-bold tracking-tight">
+            Notice Board
+          </h1>
 
-  return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">
-          Notice Board
-        </h1>
+          <p className="mt-2 text-muted-foreground">
+            Manage announcements, events, and important updates.
+          </p>
+        </div>
 
         <Link
           href="/notice/create"
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+className="
+inline-flex
+items-center
+justify-center
+rounded-lg
+bg-blue-600
+px-4
+py-2
+font-medium
+text-white
+hover:bg-blue-700
+transition
+"
         >
           Add Notice
         </Link>
       </div>
 
-      <div className="grid gap-4 mt-6">
-        {notices.map((notice) => (
-          <NoticeCard
-            key={notice.id}
-            notice={notice}
-            onDelete={handleDelete}
-          />
-        ))}
-      </div>
+      {notices.length === 0 ? (
+        <div
+          className="
+            rounded-2xl
+            border
+            border-border
+            bg-card
+            p-10
+            text-center
+          "
+        >
+          <h2 className="text-xl font-semibold">
+            No notices yet
+          </h2>
+
+          <p className="mt-2 text-muted-foreground">
+            Create your first notice to get started.
+          </p>
+        </div>
+      ) : (
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {notices.map((notice) => (
+            <NoticeCard
+              key={notice.id}
+              notice={notice}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
+      )}
     </div>
-  );
+  </div>
+);
 }
